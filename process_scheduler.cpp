@@ -57,11 +57,14 @@ class ProcessScheduler {
 
     void idle() {
         cout << this->current_time << ": " << "Nada sendo executado..." << endl;
+        Sleep(INSTANT);
+        this->current_time++;
     }
 
     void overhead_system(Process& p) {
         std::cout << this->current_time << ": " << "Realizando operações do sistema... (sobrecarga)" << endl; 
-        Sleep(p.system_overhead * 1000);
+        Sleep(INSTANT);
+        this->current_time++;
     }
 
     void block(Process& p) {
@@ -81,6 +84,9 @@ class ProcessScheduler {
 
     void run(Process& p) {
         std::cout << this->current_time << ": " << "Processo: " << p.code << " executando..." << endl; 
+        p.remaining_time -= 1;
+        Sleep(INSTANT);
+        this->current_time++;
     }
 
     public:
@@ -90,15 +96,10 @@ class ProcessScheduler {
             for (auto& process : processes) {
                 while (process.arrival_time > this->current_time) {
                     this->idle();
-                    Sleep(INSTANT);
-                    this->current_time++;
                 }
                 process.status = RUNNING;
                 while(process.remaining_time) {
                     this->run(process);
-                    process.remaining_time -= 1;
-                    Sleep(INSTANT);
-                    this->current_time++;
                 }
                 this->finish(process);
             }
@@ -123,8 +124,6 @@ class ProcessScheduler {
                 // se a fila estiver fazia, volta pro inicio
                 if (ready_queue.empty()) {
                     this->idle();
-                    Sleep(INSTANT);
-                    this->current_time++;
                     continue;
                 }
                 sort(ready_queue.begin(), ready_queue.end(), compare_execution_time);
@@ -135,9 +134,6 @@ class ProcessScheduler {
                 process.status = RUNNING;
                 while(process.remaining_time) {
                     this->run(process);
-                    process.remaining_time -= 1;
-                    Sleep(INSTANT);
-                    this->current_time++;
                 }
                 this->finish(process);
                 completed_processes++;
@@ -164,8 +160,6 @@ class ProcessScheduler {
                 // se a fila estiver fazia, volta pro inicio
                 if (ready_queue.empty()) {
                     this->idle();
-                    Sleep(INSTANT);
-                    this->current_time++;
                     continue;
                 }
 
@@ -176,9 +170,6 @@ class ProcessScheduler {
                 int exec_time = min(process.system_quantum, process.remaining_time);
                 for (int i = 0; i < exec_time; i++) {
                     this->run(process);
-                    process.remaining_time -= 1;
-                    Sleep(INSTANT);
-                    this->current_time++;
                     // o escalonador continua procurando por novos processos prontos
                     // mesmo durante um quantum
                     for (auto& p : processes) {
@@ -193,8 +184,12 @@ class ProcessScheduler {
                     completed_processes++;
                     continue;
                 }
-                ready_queue.push_back(process);
 
+                int system_overhead = process.system_overhead;
+                while(system_overhead--) {
+                    this->overhead_system(process);
+                }
+                ready_queue.push_back(process);
             }
             completed_rr = true;
             return completed_rr;
