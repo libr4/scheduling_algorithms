@@ -220,7 +220,7 @@ class OperatingSystem {
             for (int i = 0; i < n; ++i) {
                 std::cout << "Processo " << i + 1 << ":\n";
                 int arrival, execution, deadline, quantum, overhead;
-                std::cout << "Tempo de chega: ";
+                std::cout << "Tempo de chegada: ";
                 cin >> arrival;
                 std::cout << "Tempo de execução: ";
                 cin >> execution;
