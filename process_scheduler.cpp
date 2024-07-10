@@ -1,9 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include <windows.h>
+// #include <windows.h>
 #include <algorithm>
 #include <queue>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -51,19 +53,22 @@ bool compare_arrival_time(Process i, Process j) {
 bool compare_execution_time(Process i, Process j) {
     return i.execution_time < j.execution_time;
 }
+bool compare_deadline(Process i, Process j) {
+    return i.deadline < j.deadline;
+}
 class ProcessScheduler {
 
     int current_time = 0;
 
     void idle() {
         cout << this->current_time << ": " << "Nada sendo executado..." << endl;
-        Sleep(INSTANT);
+        std::this_thread::sleep_for(std::chrono::milliseconds(INSTANT)); 
         this->current_time++;
     }
 
     void overhead_system(Process& p) {
         std::cout << this->current_time << ": " << "Realizando operações do sistema... (sobrecarga)" << endl; 
-        Sleep(INSTANT);
+        std::this_thread::sleep_for(std::chrono::milliseconds(INSTANT)); 
         this->current_time++;
     }
 
@@ -85,10 +90,11 @@ class ProcessScheduler {
     void run(Process& p) {
         std::cout << this->current_time << ": " << "Processo: " << p.code << " executando..." << endl; 
         p.remaining_time -= 1;
-        Sleep(INSTANT);
+        std::this_thread::sleep_for(std::chrono::milliseconds(INSTANT));
         this->current_time++;
     }
 
+    // A partir daqui, cada um dos métodos se refere à implementação de um dos algoritmos
     public:
         // retorna verdadeiro quando todos os processos forem processados
         bool run_fifo(vector<Process> processes, int n) {
@@ -97,6 +103,7 @@ class ProcessScheduler {
                 while (process.arrival_time > this->current_time) {
                     this->idle();
                 }
+
                 process.status = RUNNING;
                 while(process.remaining_time) {
                     this->run(process);
@@ -106,6 +113,7 @@ class ProcessScheduler {
             complete = true;
             return complete;
         }
+
         bool run_sjf(vector<Process> processes, int n) {
             sort(processes.begin(), processes.end(), compare_arrival_time);
             int total_processes = processes.size();
@@ -126,6 +134,7 @@ class ProcessScheduler {
                     this->idle();
                     continue;
                 }
+
                 sort(ready_queue.begin(), ready_queue.end(), compare_execution_time);
                 Process& process = ready_queue[0];
                 //remove o primeiro item da fila
@@ -193,6 +202,64 @@ class ProcessScheduler {
             }
             completed_rr = true;
             return completed_rr;
+        }
+
+        bool run_edf(vector<Process> processes, int n) {
+            sort(processes.begin(), processes.end(), compare_arrival_time);
+            int total_processes = processes.size();
+            int completed_processes = 0;
+            bool completed_edf = false;
+            vector<std::reference_wrapper<Process>> ready_queue;
+
+            while(completed_processes < total_processes) {
+                for (auto& process : processes) {
+                    if (process.arrival_time <= this->current_time && process.status == NOT_READY) {
+                        ready_queue.push_back(process);
+                        this->make_ready(process);
+                    }
+                }
+                
+                if (ready_queue.empty()) {
+                    this->idle();
+                    continue;
+                }
+
+                sort(ready_queue.begin(), ready_queue.end(), compare_deadline);
+
+                Process& process = ready_queue[0];
+                ready_queue.erase(ready_queue.begin());
+                process.status = RUNNING;
+
+                while (process.remaining_time) {
+                    this->run(process);
+
+                    for (auto& p : processes) {
+                        if (p.arrival_time <= this->current_time && p.status == NOT_READY) {
+                            ready_queue.push_back(p);
+                            this->make_ready(p);
+                        }
+                    }
+
+                    if (!ready_queue.empty()) {
+                        sort(ready_queue.begin(), ready_queue.end(), compare_deadline);
+
+                        if (ready_queue[0].get().deadline < process.deadline) {
+                        process.status = READY;
+                        ready_queue.push_back(process);
+                        // sort(ready_queue.begin(), ready_queue.end(), compare_deadline);
+                        break;
+                        }
+                    }
+                }
+
+                if (process.remaining_time == 0) {
+                    this->finish(process);
+                    completed_processes++;
+                }
+            }
+
+            completed_edf = true;
+            return completed_edf;
         }
 };
 
@@ -264,6 +331,10 @@ class OperatingSystem {
                 case ROUND_ROBIN:
                     cout << "Rodando Round Robin..." << endl;
                     complete = scheduler.run_round_robin(processes, n);
+                    break;
+                case EDF:
+                    cout << "Rodando EDF..." << endl;
+                    complete = scheduler.run_edf(processes, n);
                     break;
             }
         }
