@@ -24,6 +24,7 @@ function handleCreateProcesses() {
   function handleRun(event) {
     event.preventDefault()
     setDialogOpen(true)
+    console.log("createdprocesses", createdProcesses)
   }
     return (
     <Box onSubmit={(e) => handleRun(e)}  component={'form'} sx={{flex:0.5, display:'flex', gap:1, maxHeight:'100%', flexDirection:'column', alignContent:'center'}}>
@@ -87,7 +88,7 @@ function handleCreateProcesses() {
             <ProcessCard name={"test"}></ProcessCard>
           </Box> */}
           <Button disabled={createdProcesses <= 0} type='submit' sx={{backgroundColor:'#006400'}} variant='contained' size='large'>Run</Button>
-          <FullScreenDialog></FullScreenDialog>
+          <FullScreenDialog dialogOpen={dialogOpen} selectedAlgorithm={algorithm} createdProcesses={createdProcesses}></FullScreenDialog>
           {/* <BoxRenderer></BoxRenderer> */}
           {/* <FifoScheduler></FifoScheduler> */}
           {/* <SjfScheduler></SjfScheduler> */}

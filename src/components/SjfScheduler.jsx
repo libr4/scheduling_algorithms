@@ -82,12 +82,15 @@ function rangeTo(n) {
 }
 
 
-const SjfScheduler = () => {
+const SjfScheduler = ({processes}) => {
     
     const [processesB, setProcessesB] = useState([
-        { code: 'P1', arrivalTime: 0, remainingTime: 6, status: 'WAITING', bar:[] },
-        { code: 'P2', arrivalTime: 2, remainingTime: 2, status: 'WAITING', bar:[] },
-        { code: 'P3', arrivalTime: 4, remainingTime: 1, status: 'WAITING', bar:[] }
+        ...(processes.map((process) => {
+            return {
+                ...process,
+                bar:[]
+            }
+        }))
     ]);
 
     const [currentTime, setCurrentTime] = useState(0);

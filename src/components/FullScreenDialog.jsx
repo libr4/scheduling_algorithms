@@ -14,12 +14,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({dialogOpen, setDialogOpen, selectedAlgorithm}) {
+export default function FullScreenDialog({createdProcesses, dialogOpen, setDialogOpen, selectedAlgorithm}) {
 
   const handleClose = () => {
     setDialogOpen(false);
   };
 
+  console.log("createdproceesses", createdProcesses)
   return (
     <React.Fragment>
       <Dialog
@@ -48,9 +49,9 @@ export default function FullScreenDialog({dialogOpen, setDialogOpen, selectedAlg
         </AppBar>
         <Box sx={{m:3}}>
           {selectedAlgorithm === "FIFO" ?
-            <FifoScheduler></FifoScheduler>
+            <FifoScheduler processes={createdProcesses}></FifoScheduler>
             :
-            <SjfScheduler></SjfScheduler>
+            <SjfScheduler processes={createdProcesses}></SjfScheduler>
           }
         </Box>
       </Dialog>

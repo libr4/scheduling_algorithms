@@ -13,6 +13,18 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [algorithm, setAlgorithm] = useState("FIFO");
 
+  const updateProcessData = (index, field, value) => {
+    const updatedProcesses = [...createdProcesses];
+    updatedProcesses[index][field] = Number(value); // Ensure the value is stored as a number
+    setCreatedProcesses(updatedProcesses);
+  };
+
+  // Function to gather data and do something with it
+  const gatherProcessData = () => {
+    console.log('Process data:', createdProcesses);
+    // You can use the data here to send it to FullScreenDialog or elsewhere
+  };
+
   return (
     <Box>
       <CssBaseline />
@@ -28,10 +40,18 @@ function App() {
         <Box sx={{maxHeight:'100%'}} component={'img'} src={iclogo}></Box>
       </Box>
     </Box>
-    <FullScreenDialog selectedAlgorithm={algorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}></FullScreenDialog>
+    <FullScreenDialog createdProcesses={createdProcesses} selectedAlgorithm={algorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}></FullScreenDialog>
       <Box sx={{display:'flex', flexWrap:'wrap', justifyContent:'center', marginTop:3}}>
         {createdProcesses.map((process, index)=> {
-          return <ProcessCard key={index} code={process.code}></ProcessCard>
+          return <ProcessCard
+          key={index}
+          index={index}
+          code={process.code}
+          arrivalTime={process.arrivalTime}
+          remainingTime={process.remainingTime}
+          deadline={process.deadline}
+          updateProcessData={updateProcessData}
+        />
         })}
       </Box>
     </Box>

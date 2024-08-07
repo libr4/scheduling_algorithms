@@ -54,17 +54,20 @@ function rangeTo(n) {
 }
 
 
-const FifoScheduler = () => {
+const FifoScheduler = ({processes}) => {
     
     const [processesB, setProcessesB] = useState([
-        { code: 'P1', arrivalTime: 0, remainingTime: 6, status: 'WAITING', bar:[] },
-        { code: 'P2', arrivalTime: 2, remainingTime: 2, status: 'WAITING', bar:[] },
-        { code: 'P3', arrivalTime: 4, remainingTime: 2, status: 'WAITING', bar:[] }
+        ...(processes.map((process) => {
+            return {
+                ...process,
+                bar:[]
+            }
+        }))
     ]);
 
     const [currentTime, setCurrentTime] = useState(0);
     const [maxChartLength, setMaxChartLength] = useState([]);
-    const INSTANT = 1000;
+    const INSTANT = 500;
 
     useEffect(() => {
         const preComputedProcesses = run_fifo(processesB);
