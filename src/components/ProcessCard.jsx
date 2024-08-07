@@ -16,7 +16,7 @@ const primary = {
       },
     });
 
-function ProcessCard({ name, status }) {
+function ProcessCard({ code }) {
   return (
     <ThemeProvider theme={theme}>
     <Card variant="elevation" sx={{ maxWidth: 300, margin: 1,  
@@ -26,7 +26,7 @@ function ProcessCard({ name, status }) {
         }, }} >
       <CardContent>
         <Typography variant="h6" component="div" gutterBottom>
-          {name}
+          {code}
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={6}>

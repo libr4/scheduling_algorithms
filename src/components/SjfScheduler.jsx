@@ -1,41 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 
-function run_fifo(processes) {
+function run_sjf(processes) {
+    // Sort processes by arrival time initially
     processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
+
     let currentTime = 0;
+    let completedProcesses = 0;
+    const totalProcesses = processes.length;
+    const readyQueue = [];
 
-    for (let process of processes) {
-        // Idle time until the process arrives
-        while (process.arrivalTime > currentTime) {
-            for (let process2 of processes) {
-                process2.bar = [...process2.bar, { color: 'gray' }];
+    while (completedProcesses < totalProcesses) {
+        // Add processes to the ready queue if they have arrived
+        for (let process of processes) {
+            if (process.arrivalTime <= currentTime && process.status !== 'COMPLETE') {
+                readyQueue.push(process);
+                process.status = 'READY';
             }
-            currentTime += 1;
         }
 
-        // Run the current process
+        // If the ready queue is empty, increment time and continue
+        if (readyQueue.length === 0) {
+            processes.forEach((process) => {
+                process.bar.push({ color: 'gray' });
+            });
+            currentTime += 1;
+            continue;
+        }
+
+        // Sort the ready queue by remaining time (shortest job first)
+        readyQueue.sort((a, b) => a.remainingTime - b.remainingTime);
+
+        // Process the shortest job
+        const process = readyQueue.shift();
+        process.status = 'RUNNING';
+
+        // Run the process until completion
         while (process.remainingTime > 0) {
-            for (let process2 of processes) {
+            processes.forEach((process2) => {
                 if (process.code === process2.code) {
-                    process2.bar = [...process2.bar, { color: 'green' }];
+                    process2.bar.push({ color: 'green' });
                     process2.remainingTime -= 1;
-                } else if (process2.arrivalTime > currentTime) {
-                    process2.bar = [...process2.bar, { color: 'gray' }];
                 } else if (process2.remainingTime === 0) {
-                    process2.bar = [...process2.bar];
+                    process2.bar = [...process2.bar, { color: 'white' }]; // Mark complete processes
+                } else if (process2.arrivalTime <= currentTime) {
+                    process2.bar.push({ color: 'yellow' }); // Waiting
                 } else {
-                    process2.bar = [...process2.bar, { color: 'yellow' }];
+                    process2.bar.push({ color: 'gray' }); // Not arrived yet
                 }
-            }
+            });
             currentTime += 1;
         }
+
+        // Mark the process as complete
+        process.status = 'COMPLETE';
+        completedProcesses += 1;
     }
+
+    // Sort processes back by their code in ascending order
     processes.sort((a, b) => {
         const numA = parseInt(a.code.substring(1));
         const numB = parseInt(b.code.substring(1));
         return numA - numB;
     });
+
     return processes;
 }
 
@@ -54,20 +82,20 @@ function rangeTo(n) {
 }
 
 
-const FifoScheduler = () => {
+const SjfScheduler = () => {
     
     const [processesB, setProcessesB] = useState([
         { code: 'P1', arrivalTime: 0, remainingTime: 6, status: 'WAITING', bar:[] },
         { code: 'P2', arrivalTime: 2, remainingTime: 2, status: 'WAITING', bar:[] },
-        { code: 'P3', arrivalTime: 4, remainingTime: 2, status: 'WAITING', bar:[] }
+        { code: 'P3', arrivalTime: 4, remainingTime: 1, status: 'WAITING', bar:[] }
     ]);
 
     const [currentTime, setCurrentTime] = useState(0);
     const [maxChartLength, setMaxChartLength] = useState([]);
-    const INSTANT = 1000;
+    const INSTANT = 500;
 
     useEffect(() => {
-        const preComputedProcesses = run_fifo(processesB);
+        const preComputedProcesses = run_sjf(processesB);
         setProcessesB(preComputedProcesses)
         const largest = findLargestBar(processesB);
         setMaxChartLength(rangeTo(largest - 1))
@@ -147,4 +175,4 @@ const FifoScheduler = () => {
     )
 }
 
-export default FifoScheduler;
+export default SjfScheduler;
