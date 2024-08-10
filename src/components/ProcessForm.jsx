@@ -5,7 +5,7 @@ import FullScreenDialog from './FullScreenDialog.jsx';
 import { useState } from 'react';
 
 
-export default function ProcessForm({algorithm, setAlgorithm, dialogOpen, setDialogOpen, createdProcesses, setCreatedProcesses}) {
+export default function ProcessForm({systemVariables, setSystemVariables, algorithm, setAlgorithm, dialogOpen, setDialogOpen, createdProcesses, setCreatedProcesses}) {
 
   const algorithms = ["FIFO", "SJF", "RR", "EDF"];
   const [nProcesses, setNProcesses] = useState(0);
@@ -24,7 +24,16 @@ function handleCreateProcesses() {
   function handleRun(event) {
     event.preventDefault()
     setDialogOpen(true)
-    console.log("createdprocesses", createdProcesses)
+  }
+
+  function handleSystemVariables(event) {
+    setSystemVariables((prevSV) => {
+      return {
+        ...prevSV,
+        [event.target.name]:parseInt(event.target.value)
+      }
+    })
+
   }
     return (
     <Box onSubmit={(e) => handleRun(e)}  component={'form'} sx={{flex:0.5, display:'flex', gap:1, maxHeight:'100%', flexDirection:'column', alignContent:'center'}}>
@@ -58,6 +67,7 @@ function handleCreateProcesses() {
         type="number"
         name="quantum"
         size='small'
+        onChange={handleSystemVariables}
         // variant="filled"
       />
       <TextField
@@ -66,6 +76,12 @@ function handleCreateProcesses() {
         type="number"
         name="systemOverhead"
         size='small'
+        onChange={handleSystemVariables}
+        // onChange={(event) => setSystemVariables((prevSV) => {
+        //   return {
+        //   ...prevSV,
+        //   systemOverhead:event.target.value
+        // }})}
         // variant="filled"
       />
     </Box>
@@ -87,8 +103,8 @@ function handleCreateProcesses() {
           {/* <Box sx={{display:'flex', flexWrap:'wrap'}}>
             <ProcessCard name={"test"}></ProcessCard>
           </Box> */}
-          <Button disabled={createdProcesses <= 0} type='submit' sx={{backgroundColor:'#006400'}} variant='contained' size='large'>Run</Button>
-          <FullScreenDialog dialogOpen={dialogOpen} selectedAlgorithm={algorithm} createdProcesses={createdProcesses}></FullScreenDialog>
+          <Button disabled={createdProcesses <= 0} onClick={() => console.log("systemvariables", systemVariables)} type='submit' sx={{backgroundColor:'#006400'}} variant='contained' size='large'>Run</Button>
+          {/* <FullScreenDialog dialogOpen={dialogOpen} selectedAlgorithm={algorithm} createdProcesses={createdProcesses}></FullScreenDialog> */}
           {/* <BoxRenderer></BoxRenderer> */}
           {/* <FifoScheduler></FifoScheduler> */}
           {/* <SjfScheduler></SjfScheduler> */}

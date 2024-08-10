@@ -9,18 +9,22 @@ import FifoScheduler from './FifoScheduler.jsx';
 import SjfScheduler from './SjfScheduler.jsx';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
+import RoundRobinScheduler from './RoundRobinScheduler.jsx';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({createdProcesses, dialogOpen, setDialogOpen, selectedAlgorithm}) {
+export default function FullScreenDialog({systemVariables, createdProcesses, dialogOpen, setDialogOpen, selectedAlgorithm}) {
+  console.log(dialogOpen)
+  console.log(selectedAlgorithm)
+  console.log(createdProcesses)
+  console.log(systemVariables)
 
   const handleClose = () => {
     setDialogOpen(false);
   };
 
-  console.log("createdproceesses", createdProcesses)
   return (
     <React.Fragment>
       <Dialog
@@ -51,7 +55,10 @@ export default function FullScreenDialog({createdProcesses, dialogOpen, setDialo
           {selectedAlgorithm === "FIFO" ?
             <FifoScheduler processes={createdProcesses}></FifoScheduler>
             :
+            selectedAlgorithm === "SJF" ?
             <SjfScheduler processes={createdProcesses}></SjfScheduler>
+            :
+            <RoundRobinScheduler processes={createdProcesses} systemVariables={systemVariables}></RoundRobinScheduler>
           }
         </Box>
       </Dialog>

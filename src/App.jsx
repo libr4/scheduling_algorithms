@@ -12,6 +12,10 @@ function App() {
   const [createdProcesses, setCreatedProcesses] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [algorithm, setAlgorithm] = useState("FIFO");
+  const [systemVariables, setSystemVariables] = useState({
+    quantum:'',
+    systemOverhead:''
+  });
 
   const updateProcessData = (index, field, value) => {
     const updatedProcesses = [...createdProcesses];
@@ -34,13 +38,13 @@ function App() {
       </Box>
       {/* <Box component='img' src={ufbalogo} sx={{height:'300px', flex:0.5}}></Box> */}
       <Box sx={{justifyContent:'center', gap:1, height:'300px', flexDirection:'column', alignContent:'center'}}>
-      <ProcessForm algorithm={algorithm} setAlgorithm={setAlgorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} createdProcesses={createdProcesses} setCreatedProcesses={setCreatedProcesses}></ProcessForm>
+      <ProcessForm systemVariables={systemVariables} setSystemVariables={setSystemVariables} algorithm={algorithm} setAlgorithm={setAlgorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} createdProcesses={createdProcesses} setCreatedProcesses={setCreatedProcesses}></ProcessForm>
       </Box>
       <Box sx={{height:'300px', flex:0.5, width:'100%', display:'flex', justifyContent:'center'}}>
         <Box sx={{maxHeight:'100%'}} component={'img'} src={iclogo}></Box>
       </Box>
     </Box>
-    <FullScreenDialog createdProcesses={createdProcesses} selectedAlgorithm={algorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}></FullScreenDialog>
+    <FullScreenDialog systemVariables={systemVariables} createdProcesses={createdProcesses} selectedAlgorithm={algorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}></FullScreenDialog>
       <Box sx={{display:'flex', flexWrap:'wrap', justifyContent:'center', marginTop:3}}>
         {createdProcesses.map((process, index)=> {
           return <ProcessCard
