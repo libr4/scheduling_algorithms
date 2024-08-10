@@ -86,6 +86,11 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
         // Put the process back in the queue if not complete
         readyQueue.push(process);
     }
+    processes.sort((a, b) => {
+        const numA = parseInt(a.code.substring(1));
+        const numB = parseInt(b.code.substring(1));
+        return numA - numB;
+    });
 
     return processes;
 }
@@ -116,7 +121,7 @@ const RoundRobinScheduler = ({processes, systemVariables}) => {
             }
         }))
     ]);
-    console.log("systemVariablesRR", systemVariables)
+    
     const [quantum, systemQuantum] = useState(systemVariables?.quantum)
     const [systemOverhead, setSystemOverhead] = useState(systemVariables?.systemOverhead)
 
