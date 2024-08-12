@@ -67,9 +67,10 @@ const FifoScheduler = ({processes}) => {
 
     const [currentTime, setCurrentTime] = useState(0);
     const [maxChartLength, setMaxChartLength] = useState([]);
-    const INSTANT = 500;
+    const INSTANT = 250;
 
     useEffect(() => {
+        console.log("processesB", processesB)
         const preComputedProcesses = run_fifo(processesB);
         setProcessesB(preComputedProcesses)
         const largest = findLargestBar(processesB);
@@ -103,7 +104,13 @@ const FifoScheduler = ({processes}) => {
                                 width={'25px'}
                             />
             {maxChartLength.slice(0, currentTime).map((item, index) => {
-                return  <Box key={index} width={'25px'} height={'25px'} textAlign={'center'}>
+                return  <Box 
+                    key={index} width={'25px'} height={'25px'} textAlign={'center'}
+                    display={'flex'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    fontFamily={'monospace'}
+                    >
                 {item}
                         </Box>
 
@@ -120,7 +127,10 @@ const FifoScheduler = ({processes}) => {
             gap:1
         }}>
             {processesB.map((item, index) => {
-                return  <Box key={index} width={'25px'} height={'25px'}>
+                return  <Box key={index} width={'25px'} height={'25px'}
+                fontWeight={1000}
+                fontFamily={'monospace'}
+                >
                             {item.code}
                         </Box>
             })}

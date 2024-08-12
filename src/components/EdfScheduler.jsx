@@ -146,7 +146,7 @@ const RoundRobinScheduler = ({processes, systemVariables}) => {
 
     const [currentTime, setCurrentTime] = useState(0);
     const [maxChartLength, setMaxChartLength] = useState([]);
-    const INSTANT = 500;
+    const INSTANT = 250;
 
     useEffect(() => {
         const preComputedProcesses = runEDF(processesB, quantum, systemOverhead);
@@ -181,7 +181,13 @@ const RoundRobinScheduler = ({processes, systemVariables}) => {
                                 width={'25px'}
                             />
             {maxChartLength.slice(0, currentTime).map((item, index) => {
-                return  <Box key={index} width={'25px'} height={'25px'} textAlign={'center'}>
+                return  <Box 
+                key={index} width={'25px'} height={'25px'} textAlign={'center'}
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                fontFamily={'monospace'}
+                >
                 {item}
                         </Box>
 
@@ -198,7 +204,11 @@ const RoundRobinScheduler = ({processes, systemVariables}) => {
             gap:1
         }}>
             {processesB.map((item, index) => {
-                return  <Box key={index} width={'25px'} height={'25px'}>
+                return  <Box key={index} width={'25px'} height={'25px'}
+                fontWeight={1000}
+                fontFamily={'monospace'}
+                
+                >
                             {item.code}
                         </Box>
             })}

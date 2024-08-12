@@ -17,6 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function FullScreenDialog({systemVariables, createdProcesses, dialogOpen, setDialogOpen, selectedAlgorithm}) {
+  console.log("createdProcesses", createdProcesses)
 
   const handleClose = () => {
     setDialogOpen(false);
@@ -40,8 +41,21 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
             >
               <CloseIcon />
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {selectedAlgorithm}
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div"
+                    fontFamily={'monospace'}
+                    fontWeight={1000}
+            >
+              {selectedAlgorithm == "FIFO" ?
+              "FIFO"
+              :
+              selectedAlgorithm == "SJF" ?
+              "SHORTEST JOB FIRST"
+              :
+              selectedAlgorithm == "RR" ?
+              "ROUND ROBIN"
+              :
+              "EARLIEST DEADLINE FIRST"
+              }
             </Typography>
             {/* <Button autoFocus color="inherit" onClick={handleClose}>
               save
