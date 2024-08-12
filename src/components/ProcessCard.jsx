@@ -23,7 +23,7 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
           border:'2px solid #291E67',
           '&:hover': {
             transition: 'box-shadow 0.3s',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
           },
         }}
       >

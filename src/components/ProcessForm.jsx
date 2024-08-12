@@ -11,15 +11,36 @@ export default function ProcessForm({systemVariables, setSystemVariables, algori
   const [nProcesses, setNProcesses] = useState(0);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(0);
 
+// function handleCreateProcesses() {
+//     const processCards = [];
+//     for (let i = 0; i < nProcesses; i++) {
+//       processCards.push({
+//         code:`P${i + 1}`
+//       })
+//     }
+//     setCreatedProcesses(processCards);
+//   }
+
 function handleCreateProcesses() {
-    const processCards = [];
-    for (let i = 0; i < nProcesses; i++) {
-      processCards.push({
-        code:`P${i + 1}`
-      })
-    }
-    setCreatedProcesses(processCards);
-  }
+  setCreatedProcesses((prevProcesses) => {
+      const processCards = [...prevProcesses];
+
+      if (nProcesses > prevProcesses.length) {
+          for (let i = prevProcesses.length; i < nProcesses; i++) {
+              processCards.push({ 
+                  code: `P${i + 1}`,
+                  arrivalTime: 0,
+                  remainingTime: 1,
+                  deadline: 0
+              });
+          }
+      } else if (nProcesses < prevProcesses.length) {
+          processCards.length = nProcesses;
+      }
+
+      return processCards;
+  });
+}
 
   function handleRun(event) {
     event.preventDefault()

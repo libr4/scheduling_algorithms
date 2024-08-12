@@ -23,6 +23,20 @@ function App() {
     setCreatedProcesses(updatedProcesses);
   };
 
+  // const updateProcessData = (index, field, value) => {
+  //   const updatedProcesses = createdProcesses.map((process) => {
+  //       return {
+  //           ...process,
+  //           [field]: process[field] // Keep the current value of the field for each process
+  //       };
+  //   });
+
+    // Update the specific process's field with the new value
+//     updatedProcesses[index][field] = Number(value);
+
+//     setCreatedProcesses(updatedProcesses);
+// };
+
   // Function to gather data and do something with it
   const gatherProcessData = () => {
     console.log('Process data:', createdProcesses);

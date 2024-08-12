@@ -31,7 +31,7 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative' }} elevation={0}>
           <Toolbar>
             <IconButton
               edge="start"
