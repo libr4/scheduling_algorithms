@@ -79,7 +79,6 @@ function runEDF(processes, systemQuantum, systemOverhead) {
         }
 
         for (let i = 0; i < systemOverhead; i++) {
-            currentTime += 1;
             processes.forEach((p) => {
                 if (p.code === process.code) {
                     p.bar.push({ color: 'red' });
@@ -91,6 +90,7 @@ function runEDF(processes, systemQuantum, systemOverhead) {
                     p.bar.push({ color: 'yellow' });
                 }
             });
+            currentTime += 1;
 
             for (let p of processes) {
                 if (

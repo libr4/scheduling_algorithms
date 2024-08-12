@@ -66,7 +66,6 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
 
         // Updated system overhead handling
         for (let i = 0; i < systemOverhead; i++) {
-            currentTime += 1;
             processes.forEach((p) => {
                 if (p.code === process.code) {
                     p.bar.push({ color: 'red' }); // Overhead for current process
@@ -79,6 +78,7 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
                     p.bar.push({ color: 'yellow' }); // Waiting
                 }
             });
+            currentTime += 1;
             for (let p of processes) {
                 if (p.arrivalTime <= currentTime && p.status === 'NOT_READY') {
                     readyQueue.push(p);
