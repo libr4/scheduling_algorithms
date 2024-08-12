@@ -36,7 +36,11 @@ function handleCreateProcesses() {
 
   }
     return (
-    <Box onSubmit={(e) => handleRun(e)}  component={'form'} sx={{flex:0.5, display:'flex', gap:1, maxHeight:'100%', flexDirection:'column', alignContent:'center'}}>
+    <Box elevation={3} onSubmit={(e) => handleRun(e)}  component={'form'} 
+      sx={{flex:0.5, display:'flex', gap:1, 
+          maxHeight:'100%', flexDirection:'column', alignContent:'center',
+          
+          }}>
     <Box sx={{display:'flex', flexDirection:'column'}}>
     <Typography>Selecione um algoritmo</Typography>
     <Select
@@ -67,6 +71,7 @@ function handleCreateProcesses() {
         type="number"
         name="quantum"
         size='small'
+        defaultValue={2}
         onChange={handleSystemVariables}
         // variant="filled"
       />
@@ -76,6 +81,7 @@ function handleCreateProcesses() {
         type="number"
         name="systemOverhead"
         size='small'
+        defaultValue={1}
         onChange={handleSystemVariables}
         // onChange={(event) => setSystemVariables((prevSV) => {
         //   return {
@@ -96,7 +102,8 @@ function handleCreateProcesses() {
       size='small'
       variant="filled"
       onChange={(event) => {setNProcesses(event.target.value)}}
-      // sx={{width:'200px'}}
+      bgcolor={'white'}
+      sx={{backgroundColor:'white'}}
     />
           <Button onClick={handleCreateProcesses} sx={{backgroundColor:'#291E67', flex:1}} variant='contained' size='small'>Criar Processo(s)</Button>
           </Box>  

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 
-function runRoundRobin(processes, systemQuantum, systemOverhead) {
-    // Sort processes by arrival time
+function runEDF(processes, systemQuantum, systemOverhead) {
+    processes.forEach((p) => (p.status = 'NOT_READY'));
     processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
 
     let currentTime = 0;
@@ -11,24 +11,27 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
     const readyQueue = [];
 
     while (completedProcesses < totalProcesses) {
-        // Add processes to the ready queue if they have arrived and are not ready
         for (let process of processes) {
-            if (process.arrivalTime <= currentTime && process.status === 'NOT_READY') {
+            if (
+                process.arrivalTime <= currentTime &&
+                process.status === 'NOT_READY'
+            ) {
                 readyQueue.push(process);
                 process.status = 'READY';
             }
         }
 
-        // If the ready queue is empty, increase current time and continue
         if (readyQueue.length === 0) {
             processes.forEach((process) => {
-                process.bar.push({ color: 'gray' }); // Idle
+                process.bar.push({ color: 'gray' });
             });
             currentTime += 1;
             continue;
         }
 
-        const process = readyQueue.shift(); // Get the first process from the queue
+        readyQueue.sort((a, b) => a.deadline - b.deadline);
+
+        const process = readyQueue.shift();
         process.status = 'RUNNING';
 
         const execTime = Math.min(systemQuantum, process.remainingTime);
@@ -37,24 +40,35 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
             process.remainingTime -= 1;
             processes.forEach((p) => {
                 if (p.code === process.code) {
-                    p.bar.push({ color: 'green' }); // Running
-                } else if (p.remainingTime === 0) {
+                    p.bar.push({ color: 'green' });
+                } else if (p.remainingTime <= 0) {
                     p.bar = [...p.bar];
-                } else if (p.arrivalTime <= currentTime) {
-                    p.bar.push({ color: 'yellow' }); // Waiting
+                } else if (p.arrivalTime <= currentTime && p.status !== 'COMPLETE') {
+                    p.bar.push({ color: 'yellow' });
                 } else {
-                    p.bar.push({ color: 'gray' }); // Not arrived
+                    p.bar.push({ color: 'gray' });
                 }
             });
             currentTime += 1;
 
-            // Add new processes to the ready queue during execution
             for (let p of processes) {
-                if (p.arrivalTime <= currentTime && p.status === 'NOT_READY') {
+                if (
+                    p.arrivalTime <= currentTime &&
+                    p.status === 'NOT_READY'
+                ) {
                     readyQueue.push(p);
                     p.status = 'READY';
                 }
             }
+
+            // if (readyQueue.length > 0) {
+            //     readyQueue.sort((a, b) => a.deadline - b.deadline);
+                // if (readyQueue[0].deadline < process.deadline) {
+                //     process.status = 'READY';
+                //     readyQueue.push(process);
+                //     break;
+                // }
+            // }
         }
 
         if (process.remainingTime === 0) {
@@ -62,34 +76,35 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
             completedProcesses++;
             continue;
         }
-        console.log("processes: ", processes)
 
-        // Updated system overhead handling
         for (let i = 0; i < systemOverhead; i++) {
             currentTime += 1;
             processes.forEach((p) => {
                 if (p.code === process.code) {
-                    p.bar.push({ color: 'red' }); // Overhead for current process
+                    p.bar.push({ color: 'red' });
                 } else if (p.arrivalTime > currentTime) {
-                    p.bar.push({ color: 'gray' }); // Not arrived
-                }
-                else if (p.remainingTime <= 0) {
+                    p.bar.push({ color: 'gray' });
+                } else if (p.remainingTime <= 0) {
                     p.bar = [...p.bar]
                 } else {
-                    p.bar.push({ color: 'yellow' }); // Waiting
+                    p.bar.push({ color: 'yellow' });
                 }
             });
+
             for (let p of processes) {
-                if (p.arrivalTime <= currentTime && p.status === 'NOT_READY') {
+                if (
+                    p.arrivalTime <= currentTime &&
+                    p.status === 'NOT_READY'
+                ) {
                     readyQueue.push(p);
                     p.status = 'READY';
                 }
             }
         }
 
-        // Put the process back in the queue if not complete
         readyQueue.push(process);
     }
+
     processes.sort((a, b) => {
         const numA = parseInt(a.code.substring(1));
         const numB = parseInt(b.code.substring(1));
@@ -98,7 +113,6 @@ function runRoundRobin(processes, systemQuantum, systemOverhead) {
 
     return processes;
 }
-
 function findLargestBar(processes) {
     let largest = 0;
     for (let p of processes) {
@@ -134,7 +148,7 @@ const RoundRobinScheduler = ({processes, systemVariables}) => {
     const INSTANT = 500;
 
     useEffect(() => {
-        const preComputedProcesses = runRoundRobin(processesB, quantum, systemOverhead);
+        const preComputedProcesses = runEDF(processesB, quantum, systemOverhead);
         setProcessesB(preComputedProcesses)
         const largest = findLargestBar(processesB);
         setMaxChartLength(rangeTo(largest - 1))

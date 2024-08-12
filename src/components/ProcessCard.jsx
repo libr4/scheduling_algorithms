@@ -18,6 +18,9 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
         sx={{
           maxWidth: 300,
           margin: 1,
+          borderRadius:'5%',
+          // bgcolor:'#291E67',
+          border:'2px solid #291E67',
           '&:hover': {
             transition: 'box-shadow 0.3s',
             boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
@@ -25,7 +28,7 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
         }}
       >
         <CardContent>
-          <Typography variant="h6" component="div" gutterBottom>
+          <Typography variant="h6" color={'#291E67'} fontWeight={1000} component="div" gutterBottom>
             {code}
           </Typography>
           <Grid container spacing={1}>
@@ -42,6 +45,10 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
                 fullWidth
                 value={arrivalTime}
                 onChange={handleInputChange}
+                sx={{
+                  '& .MuiFilledInput-root': {
+                  backgroundColor: '#f5f5f5', // Background color of input field
+                },}}
               />
             </Grid>
             <Grid item xs={6}>
@@ -57,6 +64,10 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
                 fullWidth
                 value={remainingTime}
                 onChange={handleInputChange}
+                sx={{
+                  '& .MuiFilledInput-root': {
+                  backgroundColor: '#f5f5f5', // Background color of input field
+                },}}
               />
             </Grid>
             <Grid item xs={12}>
@@ -72,6 +83,10 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
                 fullWidth
                 value={deadline}
                 onChange={handleInputChange}
+                sx={{
+                  '& .MuiFilledInput-root': {
+                  backgroundColor: '#f5f5f5', // Background color of input field
+                },}}
               />
             </Grid>
           </Grid>

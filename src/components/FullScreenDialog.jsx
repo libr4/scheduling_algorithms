@@ -10,16 +10,13 @@ import SjfScheduler from './SjfScheduler.jsx';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
 import RoundRobinScheduler from './RoundRobinScheduler.jsx';
+import EdfScheduler from './EdfScheduler.jsx'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
 export default function FullScreenDialog({systemVariables, createdProcesses, dialogOpen, setDialogOpen, selectedAlgorithm}) {
-  console.log(dialogOpen)
-  console.log(selectedAlgorithm)
-  console.log(createdProcesses)
-  console.log(systemVariables)
 
   const handleClose = () => {
     setDialogOpen(false);
@@ -58,7 +55,10 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
             selectedAlgorithm === "SJF" ?
             <SjfScheduler processes={createdProcesses}></SjfScheduler>
             :
+            selectedAlgorithm === "RR" ?
             <RoundRobinScheduler processes={createdProcesses} systemVariables={systemVariables}></RoundRobinScheduler>
+            :
+            <EdfScheduler processes={createdProcesses} systemVariables={systemVariables}></EdfScheduler>
           }
         </Box>
       </Dialog>

@@ -95,6 +95,8 @@ const FifoScheduler = ({processes}) => {
         <Box sx={{
             display:'flex',
             flexDirection:'column',
+            flexWrap:'wrap',
+            width:'75vw'
         }}>
             <Box sx={{display:'flex', gap:0.5, alignContent:'center', alignItems:'center'}}>
             <Box

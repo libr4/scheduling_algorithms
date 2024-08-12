@@ -13,8 +13,8 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [algorithm, setAlgorithm] = useState("FIFO");
   const [systemVariables, setSystemVariables] = useState({
-    quantum:'',
-    systemOverhead:''
+    quantum:2,
+    systemOverhead:1
   });
 
   const updateProcessData = (index, field, value) => {
@@ -37,7 +37,12 @@ function App() {
         <Box sx={{maxHeight:'100%'}} component={'img'} src={ufbalogo}></Box>
       </Box>
       {/* <Box component='img' src={ufbalogo} sx={{height:'300px', flex:0.5}}></Box> */}
-      <Box sx={{justifyContent:'center', gap:1, height:'300px', flexDirection:'column', alignContent:'center'}}>
+      <Box sx={{justifyContent:'center', gap:1, height:'300px', flexDirection:'column', alignContent:'center',
+          border:'5px solid #291E67',
+          pt:0,
+          px:5,
+          borderRadius:'5%'
+      }}>
       <ProcessForm systemVariables={systemVariables} setSystemVariables={setSystemVariables} algorithm={algorithm} setAlgorithm={setAlgorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} createdProcesses={createdProcesses} setCreatedProcesses={setCreatedProcesses}></ProcessForm>
       </Box>
       <Box sx={{height:'300px', flex:0.5, width:'100%', display:'flex', justifyContent:'center'}}>
