@@ -6,12 +6,18 @@ const ChartDisplay = ({ meanTurnAround, maxChartLength, currentTime, processesB 
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
+            // overflowX: 'auto',
         }}>
-            <Box sx={{ display: 'flex', gap: 0.5, alignContent: 'center', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', gap: 0.5, alignContent: 'center', alignItems: 'center' ,
+
+            // overflowX: 'auto'
+
+            }}>
                 <Box
                     bgcolor={'white'}
                     height={'25px'}
                     width={'25px'}
+                  flexShrink={0}
                 />
                 {maxChartLength.slice(0, currentTime).map((item, index) => (
                     <Box
@@ -23,6 +29,7 @@ const ChartDisplay = ({ meanTurnAround, maxChartLength, currentTime, processesB 
                         justifyContent={'center'}
                         alignItems={'center'}
                         fontFamily={'monospace'}
+                        flexShrink={0}
                     >
                         {item}
                     </Box>
