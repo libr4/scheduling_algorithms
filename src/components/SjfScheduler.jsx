@@ -11,7 +11,7 @@ function run_sjf(processes) {
     const readyQueue = [];
 
     while (completedProcesses < totalProcesses) {
-        // Add processes to the ready queue if they have arrived
+        
         for (let process of processes) {
             if (process.arrivalTime <= currentTime && process.status !== 'COMPLETE') {
                 readyQueue.push(process);
@@ -19,7 +19,7 @@ function run_sjf(processes) {
             }
         }
 
-        // If the ready queue is empty, increment time and continue
+
         if (readyQueue.length === 0) {
             processes.forEach((process) => {
                 process.bar.push({ color: 'gray' });
@@ -37,18 +37,18 @@ function run_sjf(processes) {
 
         // Run the process until completion
         while (process.remainingTime > 0) {
-            processes.forEach((process2) => {
+            for (let process2 of processes) {
                 if (process.code === process2.code) {
-                    process2.bar.push({ color: 'green' });
+                    process2.bar = [...process2.bar, { color: 'green' }];
                     process2.remainingTime -= 1;
+                } else if (process2.arrivalTime > currentTime) {
+                    process2.bar = [...process2.bar, { color: 'gray' }];
                 } else if (process2.remainingTime === 0) {
-                    process2.bar = [...process2.bar, { color: 'white' }]; // Mark complete processes
-                } else if (process2.arrivalTime <= currentTime) {
-                    process2.bar.push({ color: 'yellow' }); // Waiting
+                    process2.bar = [...process2.bar];
                 } else {
-                    process2.bar.push({ color: 'gray' }); // Not arrived yet
+                    process2.bar = [...process2.bar, { color: 'yellow' }];
                 }
-            });
+            }
             currentTime += 1;
         }
 
