@@ -40,7 +40,8 @@ function runEDF(processes, systemQuantum, systemOverhead) {
             process.remainingTime -= 1;
             processes.forEach((p) => {
                 if (p.code === process.code) {
-                    p.bar.push({ color: 'green' });
+                    if (p.deadline >= currentTime) p.bar.push({ color: 'green' });
+                    else p.bar.push({ color: 'black' });
                 } else if (p.remainingTime <= 0) {
                     p.bar = [...p.bar];
                 } else if (p.arrivalTime <= currentTime && p.status !== 'COMPLETE') {
