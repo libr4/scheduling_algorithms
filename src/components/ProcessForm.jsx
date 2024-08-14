@@ -91,6 +91,7 @@ function handleCreateProcesses() {
         label="Quantum"
         type="number"
         name="quantum"
+        fullWidth
         size='small'
         defaultValue={2}
         onChange={handleSystemVariables}

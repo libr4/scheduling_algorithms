@@ -11,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
 import RoundRobinScheduler from './RoundRobinScheduler.jsx';
 import EdfScheduler from './EdfScheduler.jsx'
+import Legend from './Legend.jsx';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
@@ -31,7 +32,7 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: 'relative' }} elevation={0}>
+        <AppBar  sx={{ position: 'relative', }} elevation={0}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -57,6 +58,7 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
               "EARLIEST DEADLINE FIRST"
               }
             </Typography>
+            <Legend />
             {/* <Button autoFocus color="inherit" onClick={handleClose}>
               save
             </Button> */}
