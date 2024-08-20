@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import CssBaseline from '@mui/material/CssBaseline';
 import ProcessForm from './components/ProcessForm.jsx';
-import ufbalogo from './assets/ufbalogo.png'
-import iclogo from './assets/iclogo.png'
+import ufbalogo from './assets/ufbalogocolorido.png'
+import iclogo from './assets/iclogocolorido2.png'
 import { Box } from '@mui/material';
 import ProcessCard from './components/ProcessCard.jsx';
 import FullScreenDialog from './components/FullScreenDialog.jsx';
@@ -52,7 +52,7 @@ function App() {
       </Box>
       {/* <Box component='img' src={ufbalogo} sx={{height:'300px', flex:0.5}}></Box> */}
       <Box sx={{justifyContent:'center', gap:1, height:'300px', flexDirection:'column', alignContent:'center',
-          border:'5px solid #291E67',
+          border:'5px solid #2C3382',
           pt:0,
           px:5,
           borderRadius:'5%'

@@ -12,6 +12,24 @@ import { Box } from '@mui/material';
 import RoundRobinScheduler from './RoundRobinScheduler.jsx';
 import EdfScheduler from './EdfScheduler.jsx'
 import Legend from './Legend.jsx';
+import Scheduler from './Scheduler.jsx';
+// import run_fifo from '../algorithms/fifo.js';
+import { run_fifo, run_sjf, runRoundRobin, runEDF } from '../algorithms'
+
+const algorithmNames = {
+  FIFO:"FIFO",
+  SJF: "SHORTEST JOB FIRST",
+  RR: "ROUND ROBIN",
+  EDF: "EARLIEST DEADLINE FIRST"
+}
+
+const functions = {
+  FIFO: run_fifo,
+  SJF: run_sjf,
+  RR: runRoundRobin,
+  EDF: runEDF
+}
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
@@ -46,17 +64,7 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
                     fontFamily={'monospace'}
                     fontWeight={1000}
             >
-              {selectedAlgorithm == "FIFO" ?
-              "FIFO"
-              :
-              selectedAlgorithm == "SJF" ?
-              "SHORTEST JOB FIRST"
-              :
-              selectedAlgorithm == "RR" ?
-              "ROUND ROBIN"
-              :
-              "EARLIEST DEADLINE FIRST"
-              }
+              { algorithmNames[selectedAlgorithm] }
             </Typography>
             <Legend />
             {/* <Button autoFocus color="inherit" onClick={handleClose}>
@@ -65,16 +73,8 @@ export default function FullScreenDialog({systemVariables, createdProcesses, dia
           </Toolbar>
         </AppBar>
         <Box sx={{m:3}}>
-          {selectedAlgorithm === "FIFO" ?
-            <FifoScheduler processes={createdProcesses}></FifoScheduler>
-            :
-            selectedAlgorithm === "SJF" ?
-            <SjfScheduler processes={createdProcesses}></SjfScheduler>
-            :
-            selectedAlgorithm === "RR" ?
-            <RoundRobinScheduler processes={createdProcesses} systemVariables={systemVariables}></RoundRobinScheduler>
-            :
-            <EdfScheduler processes={createdProcesses} systemVariables={systemVariables}></EdfScheduler>
+          {
+            <Scheduler processes={createdProcesses} systemVariables={systemVariables} runAlgorithm={functions[selectedAlgorithm]}></Scheduler>
           }
         </Box>
       </Dialog>

@@ -127,7 +127,7 @@ function handleCreateProcesses() {
       bgcolor={'white'}
       sx={{backgroundColor:'white'}}
     />
-          <Button onClick={handleCreateProcesses} sx={{backgroundColor:'#291E67', flex:1}} variant='contained' size='small'>Criar Processo(s)</Button>
+          <Button onClick={handleCreateProcesses} sx={{backgroundColor:'#2C3382', flex:1}} variant='contained' size='small'>Criar Processo(s)</Button>
           </Box>  
           {/* <Box sx={{display:'flex', flexWrap:'wrap'}}>
             <ProcessCard name={"test"}></ProcessCard>
