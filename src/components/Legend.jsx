@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 const Legend = () => {
+
   const legendItems = [
     { color: 'green', label: 'Executando' },
     { color: 'yellow', label: 'Em espera' },
@@ -21,7 +22,7 @@ const Legend = () => {
               display: 'flex',
               alignItems: 'center',
               marginBottom: '8px',
-              width: '50%', // This makes two columns
+              width: '50%',
             }}
           >
             <Box border={'1px solid black'} borderRadius={'50%'} bgcolor={item.color} height={'20px'} width={'20px'} />

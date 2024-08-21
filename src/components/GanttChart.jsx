@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-const ChartDisplay = ({ meanTurnAround, maxChartLength, currentTime, processesB }) => {
+const GanttChart = ({ meanTurnAround, maxChartLength, currentTime, processesB }) => {
     return (
         <Box sx={{
             display: 'flex',
@@ -88,4 +88,4 @@ const ChartDisplay = ({ meanTurnAround, maxChartLength, currentTime, processesB 
     );
 };
 
-export default ChartDisplay;
+export default GanttChart;
