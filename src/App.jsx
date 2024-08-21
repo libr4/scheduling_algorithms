@@ -19,51 +19,36 @@ function App() {
 
   const updateProcessData = (index, field, value) => {
     const updatedProcesses = [...createdProcesses];
-    updatedProcesses[index][field] = Number(value); // Ensure the value is stored as a number
+    updatedProcesses[index][field] = Number(value);
     setCreatedProcesses(updatedProcesses);
-  };
-
-  // const updateProcessData = (index, field, value) => {
-  //   const updatedProcesses = createdProcesses.map((process) => {
-  //       return {
-  //           ...process,
-  //           [field]: process[field] // Keep the current value of the field for each process
-  //       };
-  //   });
-
-    // Update the specific process's field with the new value
-//     updatedProcesses[index][field] = Number(value);
-
-//     setCreatedProcesses(updatedProcesses);
-// };
-
-  // Function to gather data and do something with it
-  const gatherProcessData = () => {
-    console.log('Process data:', createdProcesses);
-    // You can use the data here to send it to FullScreenDialog or elsewhere
   };
 
   return (
     <Box>
       <CssBaseline />
     <Box sx={{ display:'flex', alignItems:'center', alignContent:'center', gap:5, height:'55vh'}}>
-      <Box sx={{height:'300px', flex:0.5, width:'100%', display:'flex', justifyContent:'center'}}>
+      <Box sx={{height:'250px', flex:0.5, width:'100%', display:'flex', justifyContent:'center'}}>
         <Box sx={{maxHeight:'100%'}} component={'img'} src={ufbalogo}></Box>
       </Box>
-      {/* <Box component='img' src={ufbalogo} sx={{height:'300px', flex:0.5}}></Box> */}
       <Box sx={{justifyContent:'center', gap:1, height:'300px', flexDirection:'column', alignContent:'center',
           border:'5px solid #2C3382',
           pt:0,
           px:5,
           borderRadius:'5%'
       }}>
-      <ProcessForm systemVariables={systemVariables} setSystemVariables={setSystemVariables} algorithm={algorithm} setAlgorithm={setAlgorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} createdProcesses={createdProcesses} setCreatedProcesses={setCreatedProcesses}></ProcessForm>
+      <ProcessForm  systemVariables={systemVariables} setSystemVariables={setSystemVariables} 
+                    algorithm={algorithm} setAlgorithm={setAlgorithm} 
+                    dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} 
+                    createdProcesses={createdProcesses} setCreatedProcesses={setCreatedProcesses} />
+
       </Box>
-      <Box sx={{height:'300px', flex:0.5, width:'100%', display:'flex', justifyContent:'center'}}>
+      <Box sx={{height:'250px', flex:0.5, width:'100%', display:'flex', justifyContent:'center'}}>
         <Box sx={{maxHeight:'100%'}} component={'img'} src={iclogo}></Box>
       </Box>
     </Box>
-    <FullScreenDialog systemVariables={systemVariables} createdProcesses={createdProcesses} selectedAlgorithm={algorithm} dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}></FullScreenDialog>
+    <FullScreenDialog systemVariables={systemVariables} createdProcesses={createdProcesses} 
+                      selectedAlgorithm={algorithm} 
+                      dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
       <Box sx={{display:'flex', flexWrap:'wrap', justifyContent:'center', marginTop:3}}>
         {createdProcesses.map((process, index)=> {
           return <ProcessCard

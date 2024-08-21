@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, Button, Divider, FormControlLabel, MenuItem, Select, Typography, createTheme } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import FullScreenDialog from './FullScreenDialog.jsx';
 import { useState } from 'react';
 
 
@@ -9,17 +8,6 @@ export default function ProcessForm({systemVariables, setSystemVariables, algori
 
   const algorithms = ["FIFO", "SJF", "RR", "EDF"];
   const [nProcesses, setNProcesses] = useState(0);
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState(0);
-
-// function handleCreateProcesses() {
-//     const processCards = [];
-//     for (let i = 0; i < nProcesses; i++) {
-//       processCards.push({
-//         code:`P${i + 1}`
-//       })
-//     }
-//     setCreatedProcesses(processCards);
-//   }
 
 function handleCreateProcesses() {
   setCreatedProcesses((prevProcesses) => {
@@ -95,7 +83,6 @@ function handleCreateProcesses() {
         size='small'
         defaultValue={2}
         onChange={handleSystemVariables}
-        // variant="filled"
       />
       <TextField
         disabled = {(algorithm == "FIFO" || algorithm == "SJF")}
@@ -105,21 +92,13 @@ function handleCreateProcesses() {
         size='small'
         defaultValue={1}
         onChange={handleSystemVariables}
-        // onChange={(event) => setSystemVariables((prevSV) => {
-        //   return {
-        //   ...prevSV,
-        //   systemOverhead:event.target.value
-        // }})}
-        // variant="filled"
       />
     </Box>
     <Divider />
-    {/* <Divider /> */}
     <Box sx={{display:'flex', gap:1, justifyItems:'stretch'}}>
     <TextField
       label="Nº de processos:"
       type="number"
-      // InputProps={{ inputProps: { min: 0, max: 1000 } }}
       name="nProcesses"
       size='small'
       variant="filled"
@@ -129,16 +108,7 @@ function handleCreateProcesses() {
     />
           <Button onClick={handleCreateProcesses} sx={{backgroundColor:'#2C3382', flex:1}} variant='contained' size='small'>Criar Processo(s)</Button>
           </Box>  
-          {/* <Box sx={{display:'flex', flexWrap:'wrap'}}>
-            <ProcessCard name={"test"}></ProcessCard>
-          </Box> */}
           <Button disabled={createdProcesses <= 0} onClick={() => console.log("systemvariables", systemVariables)} type='submit' sx={{backgroundColor:'#006400'}} variant='contained' size='large'>Run</Button>
-          {/* <FullScreenDialog dialogOpen={dialogOpen} selectedAlgorithm={algorithm} createdProcesses={createdProcesses}></FullScreenDialog> */}
-          {/* <BoxRenderer></BoxRenderer> */}
-          {/* <FifoScheduler></FifoScheduler> */}
-          {/* <SjfScheduler></SjfScheduler> */}
-
-
  </Box>
   )
 }

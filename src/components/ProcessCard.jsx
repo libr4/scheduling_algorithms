@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 const theme = createTheme();
 
 function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, updateProcessData }) {
-  // Handle input changes and update parent state
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     updateProcessData(index, name, value);
@@ -47,7 +47,7 @@ function ProcessCard({ index, code, arrivalTime, remainingTime, deadline, update
                 onChange={handleInputChange}
                 sx={{
                   '& .MuiFilledInput-root': {
-                  backgroundColor: '#f5f5f5', // Background color of input field
+                  backgroundColor: '#f5f5f5', 
                 },}}
               />
             </Grid>
