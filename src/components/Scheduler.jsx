@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ChartDisplay from './GanttChart';
 import { calculateMeanTurnaround, rangeTo, findLargestBar } from './utils/utils';
+import GanttChart from './GanttChart';
 
 
 const Scheduler = ({processes, systemVariables, runAlgorithm}) => {
@@ -47,7 +47,7 @@ const Scheduler = ({processes, systemVariables, runAlgorithm}) => {
     }, [processesB]);
 
     return (
-        <ChartDisplay 
+        <GanttChart 
             meanTurnAround={meanTurnAround}
             maxChartLength={maxChartLength}
             currentTime={currentTime}
