@@ -108,7 +108,7 @@ function handleCreateProcesses() {
     />
           <Button onClick={handleCreateProcesses} sx={{backgroundColor:'#2C3382', flex:1}} variant='contained' size='small'>Criar Processo(s)</Button>
           </Box>  
-          <Button disabled={createdProcesses <= 0} onClick={() => console.log("systemvariables", systemVariables)} type='submit' sx={{backgroundColor:'#006400'}} variant='contained' size='large'>Run</Button>
+          <Button disabled={createdProcesses <= 0} onClick={() => console.log("systemvariables", systemVariables)} type='submit' sx={{backgroundColor:'rgb(85, 174, 70)'}} variant='contained' size='large'>Run</Button>
  </Box>
   )
 }

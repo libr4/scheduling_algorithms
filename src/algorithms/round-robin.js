@@ -1,5 +1,5 @@
 export default function runRoundRobin(processes, systemQuantum, systemOverhead) {
-    // Sort processes by arrival time
+    
     processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
 
     let currentTime = 0;
@@ -8,7 +8,7 @@ export default function runRoundRobin(processes, systemQuantum, systemOverhead) 
     const readyQueue = [];
 
     while (completedProcesses < totalProcesses) {
-        // Add processes to the ready queue if they have arrived and are not ready
+        
         for (let process of processes) {
             if (process.arrivalTime <= currentTime && process.status === 'NOT_READY') {
                 readyQueue.push(process);
@@ -16,16 +16,16 @@ export default function runRoundRobin(processes, systemQuantum, systemOverhead) 
             }
         }
 
-        // If the ready queue is empty, increase current time and continue
+
         if (readyQueue.length === 0) {
             processes.forEach((process) => {
-                process.bar.push({ color: 'gray' }); // Idle
+                process.bar.push({ color: 'gray' });
             });
             currentTime += 1;
             continue;
         }
 
-        const process = readyQueue.shift(); // Get the first process from the queue
+        const process = readyQueue.shift();
         process.status = 'RUNNING';
 
         const execTime = Math.min(systemQuantum, process.remainingTime);
@@ -34,18 +34,18 @@ export default function runRoundRobin(processes, systemQuantum, systemOverhead) 
             process.remainingTime -= 1;
             processes.forEach((p) => {
                 if (p.code === process.code) {
-                    p.bar.push({ color: 'green' }); // Running
+                    p.bar.push({ color: 'green' }); 
                 } else if (p.remainingTime === 0) {
                     p.bar = [...p.bar];
                 } else if (p.arrivalTime <= currentTime) {
-                    p.bar.push({ color: 'yellow' }); // Waiting
+                    p.bar.push({ color: 'yellow' });
                 } else {
-                    p.bar.push({ color: 'gray' }); // Not arrived
+                    p.bar.push({ color: 'gray' });
                 }
             });
             currentTime += 1;
 
-            // Add new processes to the ready queue during execution
+
             for (let p of processes) {
                 if (p.arrivalTime <= currentTime && p.status === 'NOT_READY') {
                     readyQueue.push(p);
@@ -59,20 +59,18 @@ export default function runRoundRobin(processes, systemQuantum, systemOverhead) 
             completedProcesses++;
             continue;
         }
-        console.log("processes: ", processes)
 
-        // Updated system overhead handling
         for (let i = 0; i < systemOverhead; i++) {
             processes.forEach((p) => {
                 if (p.code === process.code) {
-                    p.bar.push({ color: 'red' }); // Overhead for current process
+                    p.bar.push({ color: 'red' });
                 } else if (p.arrivalTime > currentTime) {
-                    p.bar.push({ color: 'gray' }); // Not arrived
+                    p.bar.push({ color: 'gray' });
                 }
                 else if (p.remainingTime <= 0) {
                     p.bar = [...p.bar]
                 } else {
-                    p.bar.push({ color: 'yellow' }); // Waiting
+                    p.bar.push({ color: 'yellow' });
                 }
             });
             currentTime += 1;
@@ -84,7 +82,7 @@ export default function runRoundRobin(processes, systemQuantum, systemOverhead) 
             }
         }
 
-        // Put the process back in the queue if not complete
+
         readyQueue.push(process);
     }
     processes.sort((a, b) => {
