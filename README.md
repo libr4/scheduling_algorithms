@@ -77,6 +77,6 @@ ou
 ```
 4. Execute a aplicação:
 ```bash
-    npm i
+    npm run dev
 ```
 O aplicativo estará disponível em **http://localhost:5173/**
